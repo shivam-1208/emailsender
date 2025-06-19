@@ -16,7 +16,7 @@ def send_email():
 
     try:
         smtp_host = os.getenv('SMTP_HOST')
-        smtp_port = int(os.getenv('SMTP_PORT'))
+        smtp_port = int(os.getenv('SMTP_PORT', 587))
         smtp_user = os.getenv('SMTP_USER')
         smtp_pass = os.getenv('SMTP_PASS')
 
@@ -31,4 +31,5 @@ def send_email():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
