@@ -4,9 +4,13 @@ import os
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return 'Email sender API is running!'
+
 @app.route('/send-email', methods=['POST'])
 def send_email():
-    data = request.json
+    data = request.get_json()
     receiver_email = data.get('receiver_email')
     subject = data.get('subject')
     body_text = data.get('body_text')
@@ -29,6 +33,11 @@ def send_email():
         return jsonify({'message': 'Email sent successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))  # Render sets PORT env automatically
+    app.run(host='0.0.0.0', port=port)  # Bind to all IPs so Render can expose it
+
 
 # 👇 Important for Render: binds to all interfaces and uses PORT from env
 if __name__ == '__main__':
