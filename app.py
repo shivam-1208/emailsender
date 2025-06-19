@@ -16,7 +16,7 @@ def send_email():
 
     try:
         smtp_host = os.getenv('SMTP_HOST')
-        smtp_port = int(os.getenv('SMTP_PORT', 587))
+        smtp_port = int(os.getenv('SMTP_PORT'))
         smtp_user = os.getenv('SMTP_USER')
         smtp_pass = os.getenv('SMTP_PASS')
 
@@ -30,6 +30,7 @@ def send_email():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# 👇 Important for Render: binds to all interfaces and uses PORT from env
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True, host="0.0.0.0", port=port)
